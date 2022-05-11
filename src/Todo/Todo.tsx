@@ -7,21 +7,26 @@ const Todo = () => {
   const [dataToEdit, setDataToEdit] = useState({});
 
   const addTask = (data: any) => {
-    const taskList = {
-      ...data,
-      id: Math.random().toString(),
-    };
-    const list: any = [...tasks];
-    list.push(taskList);
-    setTasks(list);
-    console.log(list);
+    const payload = [...tasks, data];
+    setTasks(payload);
   };
 
-  const handleTaskCompleteClick = (id: any) => {
-    const index = tasks.findIndex((x) => x.id === id);
-    const newState = Object.assign({}, tasks);
-    newState[index].isCompleted = !newState[index].isCompleted;
-    setTasks(newState);
+  const handleTaskCompleteClick = (item: any) => {
+    const updateData = {
+      ...item,
+      isCompleted: !item.isCompleted,
+    };
+
+    const index = tasks.findIndex((task) => task.id === item.id);
+
+    const newArr = [
+      ...tasks.slice(0, index),
+      updateData,
+      ...tasks.slice(index + 1),
+    ];
+
+    console.log("after update", newArr);
+    setTasks(newArr);
   };
 
   const handleTaskEditClick = (id: any) => {
@@ -42,7 +47,7 @@ const Todo = () => {
       <div className="card">
         <h5 className="card-title mt-2">Todo Form</h5>
         <div className="row justify-content-md-center">
-          <TodoForm setTasks={addTask} dataToEdit={dataToEdit}></TodoForm>
+          <TodoForm handleAddTask={addTask} dataToEdit={dataToEdit}></TodoForm>
         </div>
       </div>
       <div className="card mt-3">

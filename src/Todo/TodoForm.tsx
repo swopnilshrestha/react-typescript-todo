@@ -8,29 +8,35 @@ type editData = {
 };
 
 interface ITodoProps {
-  setTasks: any;
+  handleAddTask: any;
   dataToEdit: any;
 }
 
-const TodoForm: FC<ITodoProps> = ({ setTasks, dataToEdit }) => {
-  console.log(dataToEdit);
-
+const TodoForm: FC<ITodoProps> = ({ handleAddTask, dataToEdit }) => {
   const formik = useFormik({
     initialValues: {
       todoItem: "",
       isCompleted: false,
     },
     onSubmit: (values) => {
-      setTasks(values);
+      const payload = {
+        ...values,
+        id: Math.random().toString(),
+      };
+
+      console.log(payload);
+      handleAddTask(payload);
     },
   });
 
-  useEffect(() => {
-    console.log(formik.values, dataToEdit.isCompleted);
-    formik.values.isCompleted = dataToEdit.isCompleted;
-
-    console.log(formik.values, dataToEdit.isCompleted);
-  }, [dataToEdit]);
+  // useEffect(() => {
+  //   console.log("i am here");
+  //   // formik.values.isCompleted = dataToEdit.isCompleted;
+  //   const data = {
+  //     ...formik.values,
+  //     isCompleted: dataToEdit.isCompleted || false,
+  //   };
+  // }, [dataToEdit]);
 
   const onEditDataRecieved = (data: any) => {
     console.log(data);
