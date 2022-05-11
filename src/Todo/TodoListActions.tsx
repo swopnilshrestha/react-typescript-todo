@@ -2,32 +2,31 @@ import React from "react";
 
 const TodoListActions = ({
   item,
-  onTaskCompleteClick,
-  onTaskEditClick,
+  onTaskUpdateClick,
   onTaskDeleteClick,
 }: any) => {
   return (
     <>
-      <div className="col-1">
+      {/* <div className="col-1">
         <button
           className="btn btn-success text-nowrap"
           onClick={() => onTaskCompleteClick(item.id)}
         >
           Complete
         </button>
-      </div>
+      </div> */}
       <div className="col-1">
         <button
           className="btn btn-primary"
-          onClick={() => onTaskEditClick(item.id)}
+          onClick={() => onTaskUpdateClick(item)}
         >
-          Edit
+          Update
         </button>
       </div>
       <div className="col-1">
         <button
           className="btn btn-danger"
-          onClick={() => onTaskDeleteClick(item.id)}
+          onClick={() => onTaskDeleteClick(item)}
         >
           Delete
         </button>

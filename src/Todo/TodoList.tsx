@@ -4,15 +4,11 @@ import TodoListStatus from "./TodoListStatus";
 const TodoList = ({
   tasks,
   handleTaskCompleteClick,
-  handleTaskEditClick,
+  handleTaskUpdateClick,
   handleTaskDeleteClick,
 }: any) => {
-  const onTaskCompleteClick = (itemId: any) => {
-    handleTaskCompleteClick(itemId);
-  };
-
-  const onTaskEditClick = (itemId: any) => {
-    handleTaskEditClick(itemId);
+  const onTaskUpdateClick = (item: Object) => {
+    handleTaskUpdateClick(item);
   };
 
   const onTaskDeleteClick = (itemId: any) => {
@@ -29,17 +25,12 @@ const TodoList = ({
           <div className="ms-2 me-auto">
             <div className="fw-bold">{item.todoItem}</div>
           </div>
-
           <div className="col-2 mt-1">
             <TodoListStatus item={item}></TodoListStatus>
           </div>
-
           <TodoListActions
             item={item}
-            onTaskCompleteClick={(itemId: number) =>
-              onTaskCompleteClick(itemId)
-            }
-            onTaskEditClick={onTaskEditClick}
+            onTaskUpdateClick={(item: Object) => onTaskUpdateClick(item)}
             onTaskDeleteClick={onTaskDeleteClick}
           ></TodoListActions>
         </li>
@@ -47,23 +38,30 @@ const TodoList = ({
     );
   };
 
-  let content =
-    tasks && tasks.length > 0 ? (
-      tasks.map((item: any) => renderContent(item))
-    ) : (
-      <span>No entries found!</span>
+  const renderNoTasksMessage = () => {
+    return (
+      <div className="alert alert-danger mt-3" role="alert">
+        No tasks found!
+      </div>
     );
+  };
 
   return (
     <div>
-      <h5 className="card-title mt-2">Todo List</h5>
-      <div className="row">
-        <div className="col">
-          <ol className="list-group list-group-numbered">
-            {tasks.map((item: any) => renderContent(item))}
-          </ol>
-        </div>
-      </div>
+      {tasks?.length > 0 ? (
+        <>
+          <h5 className="card-title mt-2">Todo List</h5>
+          <div className="row">
+            <div className="col">
+              <ol className="list-group list-group-numbered">
+                {tasks.map((item: any) => renderContent(item))}
+              </ol>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>{renderNoTasksMessage()}</>
+      )}
     </div>
   );
 };

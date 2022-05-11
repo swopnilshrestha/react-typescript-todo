@@ -9,10 +9,10 @@ type editData = {
 
 interface ITodoProps {
   setTasks: any;
-  dataToEdit: any;
+  dataToUpdate: any;
 }
 
-const TodoForm: FC<ITodoProps> = ({ setTasks, dataToEdit }) => {
+const TodoForm: FC<ITodoProps> = ({ setTasks, dataToUpdate }) => {
   const formik = useFormik({
     initialValues: {
       todoItem: "",
@@ -25,11 +25,11 @@ const TodoForm: FC<ITodoProps> = ({ setTasks, dataToEdit }) => {
   });
 
   useEffect(() => {
-    console.log(formik.values, dataToEdit.isCompleted);
-    formik.values.isCompleted = dataToEdit.isCompleted;
+    console.log(formik.values, dataToUpdate.isCompleted);
+    formik.values.isCompleted = dataToUpdate.isCompleted;
 
-    console.log(formik.values, dataToEdit.isCompleted);
-  }, [dataToEdit]);
+    console.log(formik.values, dataToUpdate.isCompleted);
+  }, [dataToUpdate]);
 
   return (
     <form onSubmit={formik.handleSubmit}>

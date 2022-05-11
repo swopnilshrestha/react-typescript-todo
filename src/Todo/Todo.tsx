@@ -4,7 +4,7 @@ import TodoList from "./TodoList";
 
 const Todo = () => {
   const [tasks, setTasks] = useState<any[]>([]);
-  const [dataToEdit, setDataToEdit] = useState({});
+  const [dataToUpdate, setDataToUpdate] = useState({});
 
   const addTask = (data: any) => {
     const taskList = {
@@ -24,10 +24,14 @@ const Todo = () => {
     setTasks(newState);
   };
 
-  const handleTaskEditClick = (id: any) => {
-    const index = tasks.findIndex((x) => x.id === id);
-    console.log(tasks[index]);
-    setDataToEdit(tasks[index]);
+  const handleTaskUpdateClick = (item: Object) => {
+    console.log(item);
+    setDataToUpdate(item);
+    console.log(dataToUpdate);
+
+    // const index = tasks.findIndex((x) => x.id === id);
+    // console.log(tasks[index]);
+    // setDataToUpdate(tasks[index]);
   };
 
   const handleTaskDeleteClick = (id: any) => {
@@ -42,14 +46,13 @@ const Todo = () => {
       <div className="card">
         <h5 className="card-title mt-2">Todo Form</h5>
         <div className="row justify-content-md-center">
-          <TodoForm setTasks={addTask} dataToEdit={dataToEdit}></TodoForm>
+          <TodoForm setTasks={addTask} dataToUpdate={dataToUpdate}></TodoForm>
         </div>
       </div>
       <div className="card mt-3">
         <TodoList
           tasks={tasks}
-          handleTaskCompleteClick={(id: any) => handleTaskCompleteClick(id)}
-          handleTaskEditClick={(id: any) => handleTaskEditClick(id)}
+          handleTaskUpdateClick={(item: Object) => handleTaskUpdateClick(item)}
           handleTaskDeleteClick={(id: any) => handleTaskDeleteClick(id)}
         />
       </div>
