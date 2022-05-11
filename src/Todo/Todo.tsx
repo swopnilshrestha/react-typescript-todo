@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
 
 const Todo = () => {
-  const [tasks, setTasks] = React.useState<any[]>([]);
+  const [tasks, setTasks] = useState<any[]>([]);
   const [dataToEdit, setDataToEdit] = useState({});
 
   const addTask = (data: any) => {

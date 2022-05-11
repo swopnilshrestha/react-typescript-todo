@@ -1,6 +1,4 @@
 const TodoList = (props: any) => {
-  let tasks = props.tasks;
-
   const onTaskCompleteClick = (itemId: any) => {
     props.handleTaskCompleteClick(itemId);
   };
@@ -62,7 +60,7 @@ const TodoList = (props: any) => {
         </li>
       ))
     ) : (
-      <span></span>
+      <span>No entries found!</span>
     );
 
   return (

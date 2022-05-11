@@ -13,14 +13,13 @@ interface ITodoProps {
 }
 
 const TodoForm: FC<ITodoProps> = ({ setTasks, dataToEdit }) => {
-  console.log(dataToEdit);
-
   const formik = useFormik({
     initialValues: {
       todoItem: "",
       isCompleted: false,
     },
     onSubmit: (values) => {
+      values.isCompleted = false;
       setTasks(values);
     },
   });
@@ -31,10 +30,6 @@ const TodoForm: FC<ITodoProps> = ({ setTasks, dataToEdit }) => {
 
     console.log(formik.values, dataToEdit.isCompleted);
   }, [dataToEdit]);
-
-  const onEditDataRecieved = (data: any) => {
-    console.log(data);
-  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
