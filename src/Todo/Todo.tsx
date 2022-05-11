@@ -7,14 +7,8 @@ const Todo = () => {
   const [dataToUpdate, setDataToUpdate] = useState({});
 
   const addTask = (data: any) => {
-    const taskList = {
-      ...data,
-      id: Math.random().toString(),
-    };
-    const list: any = [...tasks];
-    list.push(taskList);
-    setTasks(list);
-    console.log(list);
+    const payload = [...tasks, data];
+    setTasks(payload);
   };
 
   const handleTaskCompleteClick = (id: any) => {
@@ -25,13 +19,27 @@ const Todo = () => {
   };
 
   const handleTaskUpdateClick = (item: Object) => {
-    console.log(item);
     setDataToUpdate(item);
-    console.log(dataToUpdate);
+  };
 
-    // const index = tasks.findIndex((x) => x.id === id);
-    // console.log(tasks[index]);
-    // setDataToUpdate(tasks[index]);
+  console.log(dataToUpdate);
+
+  const handleTaskCompleteClick1 = (item: any) => {
+    const updateData = {
+      ...item,
+      isCompleted: !item.isCompleted,
+    };
+
+    const index = tasks.findIndex((task) => task.id === item.id);
+
+    const newArr = [
+      ...tasks.slice(0, index),
+      updateData,
+      ...tasks.slice(index + 1),
+    ];
+
+    console.log("after update", newArr);
+    setTasks(newArr);
   };
 
   const handleTaskDeleteClick = (id: any) => {
@@ -46,7 +54,10 @@ const Todo = () => {
       <div className="card">
         <h5 className="card-title mt-2">Todo Form</h5>
         <div className="row justify-content-md-center">
-          <TodoForm setTasks={addTask} dataToUpdate={dataToUpdate}></TodoForm>
+          <TodoForm
+            handleAddTask={addTask}
+            dataToUpdate={dataToUpdate}
+          ></TodoForm>
         </div>
       </div>
       <div className="card mt-3">
