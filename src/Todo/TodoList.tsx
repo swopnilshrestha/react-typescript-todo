@@ -1,19 +1,27 @@
-const TodoList = (props: any) => {
+import TodoListActions from "./TodoListActions";
+import TodoListStatus from "./TodoListStatus";
+
+const TodoList = ({
+  tasks,
+  handleTaskCompleteClick,
+  handleTaskEditClick,
+  handleTaskDeleteClick,
+}: any) => {
   const onTaskCompleteClick = (itemId: any) => {
-    props.handleTaskCompleteClick(itemId);
+    handleTaskCompleteClick(itemId);
   };
 
   const onTaskEditClick = (itemId: any) => {
-    props.handleTaskEditClick(itemId);
+    handleTaskEditClick(itemId);
   };
 
   const onTaskDeleteClick = (itemId: any) => {
-    props.handleTaskDeleteClick(itemId);
+    handleTaskDeleteClick(itemId);
   };
 
   let content =
-    props && props.tasks.length > 0 ? (
-      props.tasks.map((item: any) => (
+    tasks && tasks.length > 0 ? (
+      tasks.map((item: any) => (
         <li
           className="list-group-item d-flex justify-content-between align-items-start"
           key={item.id}
@@ -23,40 +31,16 @@ const TodoList = (props: any) => {
           </div>
 
           <div className="col-2 mt-1">
-            <h5>
-              {item.isCompleted && (
-                <span className="badge alert-success">Completed</span>
-              )}
-              {!item.isCompleted && (
-                <span className="badge alert-warning">Pending</span>
-              )}
-            </h5>
+            <TodoListStatus item={item}></TodoListStatus>
           </div>
-
-          <div className="col-1">
-            <button
-              className="btn btn-success text-nowrap"
-              onClick={() => onTaskCompleteClick(item.id)}
-            >
-              Complete
-            </button>
-          </div>
-          <div className="col-1">
-            <button
-              className="btn btn-primary"
-              onClick={() => onTaskEditClick(item.id)}
-            >
-              Edit
-            </button>
-          </div>
-          <div className="col-1">
-            <button
-              className="btn btn-danger"
-              onClick={() => onTaskDeleteClick(item.id)}
-            >
-              Delete
-            </button>
-          </div>
+          <TodoListActions
+            item={item}
+            onTaskCompleteClick={(itemId: number) =>
+              onTaskCompleteClick(itemId)
+            }
+            onTaskEditClick={onTaskEditClick}
+            onTaskDeleteClick={onTaskDeleteClick}
+          ></TodoListActions>
         </li>
       ))
     ) : (
