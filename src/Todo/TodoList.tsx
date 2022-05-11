@@ -11,8 +11,8 @@ const TodoList = ({
     handleTaskUpdateClick(item);
   };
 
-  const onTaskDeleteClick = (itemId: any) => {
-    handleTaskDeleteClick(itemId);
+  const onTaskDeleteClick = (item: Object) => {
+    handleTaskDeleteClick(item);
   };
 
   const renderContent = (item: any) => {
@@ -31,7 +31,7 @@ const TodoList = ({
           <TodoListActions
             item={item}
             onTaskUpdateClick={(item: Object) => onTaskUpdateClick(item)}
-            onTaskDeleteClick={onTaskDeleteClick}
+            onTaskDeleteClick={(item: Object) => onTaskDeleteClick(item)}
           ></TodoListActions>
         </li>
       </>

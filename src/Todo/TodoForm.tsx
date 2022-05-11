@@ -3,12 +3,17 @@ import React, { FC, useEffect, useState } from "react";
 
 interface ITodoProps {
   handleAddTask: any;
+  handleUpdateTask: any;
   dataToUpdate: any;
 }
 
-const TodoForm: FC<ITodoProps> = ({ handleAddTask, dataToUpdate }) => {
+const TodoForm: FC<ITodoProps> = ({
+  handleAddTask,
+  handleUpdateTask,
+  dataToUpdate,
+}) => {
   const isUpdating = dataToUpdate.id ? true : false;
-  const cleanFormValues = { todoItem: "", isCompleted: false };
+
   const [formValues, setFormValues] = useState({
     todoItem: "",
     isCompleted: false,
@@ -20,12 +25,21 @@ const TodoForm: FC<ITodoProps> = ({ handleAddTask, dataToUpdate }) => {
     onSubmit: (values, { resetForm }) => {
       const payload = {
         ...values,
-        id: Math.random().toString(),
+        id: isUpdating ? dataToUpdate.id : generateRandomId(),
       };
-      handleAddTask(payload);
+      submitForm(payload);
       resetForm({ values: { todoItem: "", isCompleted: false } });
     },
   });
+
+  const submitForm = (payload: any) => {
+    if (!isUpdating) handleAddTask(payload);
+    else handleUpdateTask(payload);
+  };
+
+  const generateRandomId = () => {
+    return Math.random().toString();
+  };
 
   const getClassForInput = () => {
     const customClass = isUpdating ? "col-9" : "col-12";

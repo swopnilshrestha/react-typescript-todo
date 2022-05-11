@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import {
+  deleteObjectArrayAtIndex,
+  getIndex,
+  updateObjectArrayAtIndex,
+} from "../utils/ArrayUtils";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
 
@@ -11,42 +16,20 @@ const Todo = () => {
     setTasks(payload);
   };
 
-  const handleTaskCompleteClick = (id: any) => {
-    const index = tasks.findIndex((x) => x.id === id);
-    const newState = Object.assign({}, tasks);
-    newState[index].isCompleted = !newState[index].isCompleted;
-    setTasks(newState);
+  const updateTask = (data: any) => {
+    const index = getIndex(tasks, data);
+    const updatedArray = updateObjectArrayAtIndex(tasks, index, data);
+    setTasks(updatedArray);
   };
 
   const handleTaskUpdateClick = (item: Object) => {
     setDataToUpdate(item);
   };
 
-  console.log(dataToUpdate);
-
-  const handleTaskCompleteClick1 = (item: any) => {
-    const updateData = {
-      ...item,
-      isCompleted: !item.isCompleted,
-    };
-
-    const index = tasks.findIndex((task) => task.id === item.id);
-
-    const newArr = [
-      ...tasks.slice(0, index),
-      updateData,
-      ...tasks.slice(index + 1),
-    ];
-
-    console.log("after update", newArr);
+  const handleTaskDeleteClick = (item: any) => {
+    const index = tasks.findIndex((x) => x.id === item.id);
+    let newArr = deleteObjectArrayAtIndex(tasks, index);
     setTasks(newArr);
-  };
-
-  const handleTaskDeleteClick = (id: any) => {
-    const index = tasks.findIndex((x) => x.id === id);
-    const newState = Object.assign({}, tasks);
-    if (index !== -1) tasks.splice(index, 1);
-    setTasks(newState);
   };
 
   return (
@@ -56,6 +39,7 @@ const Todo = () => {
         <div className="row justify-content-md-center">
           <TodoForm
             handleAddTask={addTask}
+            handleUpdateTask={updateTask}
             dataToUpdate={dataToUpdate}
           ></TodoForm>
         </div>
@@ -64,7 +48,7 @@ const Todo = () => {
         <TodoList
           tasks={tasks}
           handleTaskUpdateClick={(item: Object) => handleTaskUpdateClick(item)}
-          handleTaskDeleteClick={(id: any) => handleTaskDeleteClick(id)}
+          handleTaskDeleteClick={(item: Object) => handleTaskDeleteClick(item)}
         />
       </div>
     </div>
