@@ -19,9 +19,9 @@ const TodoList = ({
     handleTaskDeleteClick(itemId);
   };
 
-  let content =
-    tasks && tasks.length > 0 ? (
-      tasks.map((item: any) => (
+  const renderContent = (item: any) => {
+    return (
+      <>
         <li
           className="list-group-item d-flex justify-content-between align-items-start"
           key={item.id}
@@ -33,6 +33,7 @@ const TodoList = ({
           <div className="col-2 mt-1">
             <TodoListStatus item={item}></TodoListStatus>
           </div>
+
           <TodoListActions
             item={item}
             onTaskCompleteClick={(itemId: number) =>
@@ -42,7 +43,15 @@ const TodoList = ({
             onTaskDeleteClick={onTaskDeleteClick}
           ></TodoListActions>
         </li>
-      ))
+      </>
+    );
+  };
+
+  let content =
+    tasks && tasks.length > 0 ? (
+      tasks.map((item: any) => () => {
+        renderContent(item);
+      })
     ) : (
       <span>No entries found!</span>
     );
