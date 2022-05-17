@@ -1,56 +1,55 @@
-import { Formik, useFormik } from "formik";
-import React, { FC, useEffect, useState } from "react";
-
-interface ITodoProps {
-  handleAddTask: any;
-  handleUpdateTask: any;
-  dataToUpdate: any;
-}
+import classNames from "classnames";
+import { FormikErrors, FormikTouched, useFormik } from "formik";
+import { FC, useEffect, useState } from "react";
+import { TodoFormValidationSchema } from "../schemas/todoFormValidation.schema";
+import { ITodoProps } from "../types/todo.types";
+import { ITodoData } from "../types/todoData.types";
 
 const TodoForm: FC<ITodoProps> = ({
   handleAddTask,
   handleUpdateTask,
   dataToUpdate,
 }) => {
-  const isUpdating = dataToUpdate.id ? true : false;
+  const isUpdating = !!dataToUpdate?.id;
 
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<ITodoData | undefined>({
     todoItem: "",
     isCompleted: false,
   });
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: formValues,
-    onSubmit: (values, { resetForm }) => {
-      const payload = {
+    initialValues: {
+      todoItem: "",
+      isCompleted: false,
+    }, // <==== this object cannot be replaced with "formValues" i.e. state
+    validationSchema: TodoFormValidationSchema,
+    onSubmit: (values: ITodoData, { resetForm }): void => {
+      const payload: ITodoData = {
         ...values,
-        id: isUpdating ? dataToUpdate.id : generateRandomId(),
+        id: isUpdating ? dataToUpdate?.id : generateRandomId(),
       };
       submitForm(payload);
       resetForm({ values: { todoItem: "", isCompleted: false } });
     },
   });
 
-  const submitForm = (payload: any) => {
+  const submitForm = (payload: ITodoData): void => {
     if (!isUpdating) handleAddTask(payload);
     else handleUpdateTask(payload);
   };
 
-  const generateRandomId = () => {
+  const generateRandomId = (): string => {
     return Math.random().toString();
   };
 
-  const getClassForInput = () => {
-    const customClass = isUpdating ? "col-9" : "col-12";
-    return customClass;
-  };
-
-  const handleCheckboxChange = (event: any) => {
+  const handleCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const isChecked = event.target.checked;
   };
 
-  const renderCheckbox = () => {
+  const renderCheckbox = (): JSX.Element => {
     return (
       <div className="col-3">
         <div className="form-group mx-sm-4 mb-2">
@@ -79,7 +78,12 @@ const TodoForm: FC<ITodoProps> = ({
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="row">
-        <div className={getClassForInput()}>
+        <div
+          className={classNames({
+            "col-9": isUpdating,
+            "col-12": !isUpdating,
+          })}
+        >
           <div className="form-group mx-sm-4 mb-2">
             <label htmlFor="todoItem">Todo Item</label>
             <input
@@ -91,6 +95,9 @@ const TodoForm: FC<ITodoProps> = ({
               value={formik.values.todoItem}
             />
           </div>
+          {formik.errors.todoItem && formik.touched.todoItem ? (
+            <p className="text-danger">{formik.errors.todoItem}</p>
+          ) : null}
         </div>
         <>{isUpdating && renderCheckbox()}</>
       </div>

@@ -1,17 +1,19 @@
-import React from "react";
+import classNames from "classnames";
+import { FC } from "react";
+import { ITodoListStatusProps } from "../types/todoListStatus.types";
 
-const TodoListStatus = ({ item }: any) => {
+const TodoListStatus: FC<ITodoListStatusProps> = ({ isCompleted }) => {
   return (
-    <>
-      <h5>
-        {item.isCompleted && (
-          <span className="badge alert-success">Completed</span>
-        )}
-        {!item.isCompleted && (
-          <span className="badge alert-warning">Pending</span>
-        )}
-      </h5>
-    </>
+    <h5>
+      <span
+        className={classNames("badge", {
+          "alert-success": isCompleted,
+          "alert-warning": !isCompleted,
+        })}
+      >
+        {isCompleted ? "Completed" : "Pending"}
+      </span>
+    </h5>
   );
 };
 

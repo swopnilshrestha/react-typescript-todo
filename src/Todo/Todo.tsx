@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ITodoData } from "../types/todoData.types";
 import {
   deleteObjectArrayAtIndex,
   getIndex,
@@ -9,24 +10,24 @@ import TodoList from "./TodoList";
 
 const Todo = () => {
   const [tasks, setTasks] = useState<any[]>([]);
-  const [dataToUpdate, setDataToUpdate] = useState({});
+  const [dataToUpdate, setDataToUpdate] = useState<ITodoData | undefined>();
 
-  const addTask = (data: any) => {
+  const addTask = (data: ITodoData): void => {
     const payload = [...tasks, data];
     setTasks(payload);
   };
 
-  const updateTask = (data: any) => {
+  const updateTask = (data: ITodoData): void => {
     const index = getIndex(tasks, data);
     const updatedArray = updateObjectArrayAtIndex(tasks, index, data);
     setTasks(updatedArray);
   };
 
-  const handleTaskUpdateClick = (item: Object) => {
+  const handleTaskUpdateClick = (item: ITodoData): void => {
     setDataToUpdate(item);
   };
 
-  const handleTaskDeleteClick = (item: any) => {
+  const handleTaskDeleteClick = (item: ITodoData): void => {
     const index = tasks.findIndex((x) => x.id === item.id);
     let newArr = deleteObjectArrayAtIndex(tasks, index);
     setTasks(newArr);
@@ -47,8 +48,12 @@ const Todo = () => {
       <div className="card mt-3">
         <TodoList
           tasks={tasks}
-          handleTaskUpdateClick={(item: Object) => handleTaskUpdateClick(item)}
-          handleTaskDeleteClick={(item: Object) => handleTaskDeleteClick(item)}
+          handleTaskUpdateClick={(item: ITodoData) =>
+            handleTaskUpdateClick(item)
+          }
+          handleTaskDeleteClick={(item: ITodoData) =>
+            handleTaskDeleteClick(item)
+          }
         />
       </div>
     </div>

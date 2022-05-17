@@ -1,20 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
+import { ITodoListActionsProps } from "../types/todoListActionsProps.types";
 
-const TodoListActions = ({
+const TodoListActions: FC<ITodoListActionsProps> = ({
   item,
   onTaskUpdateClick,
   onTaskDeleteClick,
 }: any) => {
   return (
     <>
-      {/* <div className="col-1">
-        <button
-          className="btn btn-success text-nowrap"
-          onClick={() => onTaskCompleteClick(item.id)}
-        >
-          Complete
-        </button>
-      </div> */}
       <div className="col-1">
         <button
           className="btn btn-primary"
