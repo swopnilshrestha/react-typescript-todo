@@ -33,7 +33,6 @@ const TodoForm: FC<ITodoProps> = ({
   });
 
   const resetFormView = () => {
-    debugger;
     const form = document.querySelector("form");
     form?.reset();
   };
