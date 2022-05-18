@@ -5,7 +5,7 @@ const TodoListActions: FC<ITodoListActionsProps> = ({
   item,
   onTaskUpdateClick,
   onTaskDeleteClick,
-}: any) => {
+}) => {
   return (
     <>
       <div className="col-1">

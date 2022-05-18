@@ -4,25 +4,22 @@ import { FC, useEffect, useState } from "react";
 import { TodoFormValidationSchema } from "../schemas/todoFormValidation.schema";
 import { ITodoProps } from "../types/todo.types";
 import { ITodoData } from "../types/todoData.types";
+import TodoFormActions from "./TodoFormActions";
 
 const TodoForm: FC<ITodoProps> = ({
   handleAddTask,
   handleUpdateTask,
   dataToUpdate,
 }) => {
-  const isUpdating = !!dataToUpdate?.id;
-
-  const [formValues, setFormValues] = useState<ITodoData | undefined>({
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [formValues, setFormValues] = useState<ITodoData>({
     todoItem: "",
     isCompleted: false,
   });
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: {
-      todoItem: "",
-      isCompleted: false,
-    }, // <==== this object cannot be replaced with "formValues" i.e. state
+    initialValues: formValues,
     validationSchema: TodoFormValidationSchema,
     onSubmit: (values: ITodoData, { resetForm }): void => {
       const payload: ITodoData = {
@@ -31,8 +28,15 @@ const TodoForm: FC<ITodoProps> = ({
       };
       submitForm(payload);
       resetForm({ values: { todoItem: "", isCompleted: false } });
+      resetFormView();
     },
   });
+
+  const resetFormView = () => {
+    debugger;
+    const form = document.querySelector("form");
+    form?.reset();
+  };
 
   const submitForm = (payload: ITodoData): void => {
     if (!isUpdating) handleAddTask(payload);
@@ -43,36 +47,35 @@ const TodoForm: FC<ITodoProps> = ({
     return Math.random().toString();
   };
 
-  const handleCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const isChecked = event.target.checked;
-  };
-
   const renderCheckbox = (): JSX.Element => {
     return (
       <div className="col-3">
         <div className="form-group mx-sm-4 mb-2">
-          <label htmlFor="isCompleted"></label>
+          <label htmlFor="isCompleted" />
           <div className="form-check">
             <input
               id="isCompleted"
               name="isCompleted"
               className="form-check-input"
               type="checkbox"
-              onChange={(event) => handleCheckboxChange(event)}
+              onChange={formik.handleChange}
             />
-            <label className="form-check-label" htmlFor="defaultCheck1">
-              Completed?
-            </label>
+            <label className="form-check-label">Completed?</label>
           </div>
         </div>
       </div>
     );
   };
 
+  const handleExitUpdate = () => {
+    setIsUpdating(false);
+  };
+
   useEffect(() => {
-    setFormValues(dataToUpdate);
+    if (dataToUpdate) {
+      setIsUpdating(true);
+      setFormValues(dataToUpdate);
+    }
   }, [dataToUpdate]);
 
   return (
@@ -101,9 +104,10 @@ const TodoForm: FC<ITodoProps> = ({
         </div>
         <>{isUpdating && renderCheckbox()}</>
       </div>
-      <button type="submit" className="btn btn-primary mt-2 mb-2">
-        {isUpdating ? "Update" : "Submit"}
-      </button>
+      <TodoFormActions
+        isUpdating={isUpdating}
+        handleExitUpdate={handleExitUpdate}
+      />
     </form>
   );
 };

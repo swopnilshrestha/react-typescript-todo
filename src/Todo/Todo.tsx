@@ -10,7 +10,7 @@ import TodoList from "./TodoList";
 
 const Todo = () => {
   const [tasks, setTasks] = useState<any[]>([]);
-  const [dataToUpdate, setDataToUpdate] = useState<ITodoData | undefined>();
+  const [dataToUpdate, setDataToUpdate] = useState<ITodoData>();
 
   const addTask = (data: ITodoData): void => {
     const payload = [...tasks, data];
@@ -31,6 +31,7 @@ const Todo = () => {
     const index = tasks.findIndex((x) => x.id === item.id);
     let newArr = deleteObjectArrayAtIndex(tasks, index);
     setTasks(newArr);
+    setDataToUpdate(undefined);
   };
 
   return (
